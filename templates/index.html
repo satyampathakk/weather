@@ -1,0 +1,67 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+    <style>
+
+    </style>
+<head>
+    <link rel='stylesheet' href="{%static   'css/style.css' %}"></link>
+
+</head>
+<body>
+    <div class='background'>
+    <div class="search-container">
+        <br>
+        <h1>Enter Location</h1>
+        <div>
+        <form method="post" action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="text" name="loc" class="search-bar" placeholder="Search...">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        {% if country %}
+            <p>Country: {{ country }}</p>
+            <p>Temperature: {{ temp|floatformat:2}} C</p>
+            <p>Pressure: {{ pressure }}</p>
+            <p>Humidity: {{ humidity }}</p>
+        {% endif %}
+
+        {% if error_message %}
+            <p>Error: {{ error_message }}</p>
+        {% endif %}
+    </div>
+</div>
+</div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backgroundElement = document.querySelector('.background');
+    
+        function updateBackgroundImage(temp) {
+
+            if (temp >= 30) {
+                backgroundElement.style.backgroundImage = 'url("../static/img/hot.jpg")';
+            } else if(temp <=30 && temp >= 8) {
+                backgroundElement.style.backgroundImage = 'url("../static/img/moderate.jpg")';
+            }
+            else if( temp<=8) {
+                backgroundElement.style.backgroundImage = 'url("../static/img/cold.jpg")';
+            }
+            else{
+                    backgroundElement.style.backgroundImage = 'url("../static/img/index.jpg")';
+            }
+          
+
+        }
+    
+
+        const initialTemp = parseFloat("{{ temp }}");
+       
+    
+        updateBackgroundImage(initialTemp);
+
+    });
+    
+</script>
+</html>
